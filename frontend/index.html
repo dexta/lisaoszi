@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>lisa oszi</title>
+  <link rel="stylesheet" href="">
+</head>
+
+<body onload="init()">
+<style type="text/css">
+  body {
+    margin: 0;
+    padding: 0;
+    background-color: #DEDEDE;
+  }
+  canvas {
+    position: absolute;
+    margin: 0;
+    padding: 0;
+    top:0;
+    left:0;
+  }
+
+</style>
+
+<canvas id="gameCanvas"></canvas>
+
+<script type="text/javascript">
+  const gameCanvas = document.getElementById("gameCanvas");
+  const ctx = gameCanvas.getContext("2d");
+
+  let HEIGHT = gameCanvas.height;
+  let WIDTH = gameCanvas.width;
+
+  let HORIZONTAL_CIRCLES = [];
+  let VERTICAL_CIRCLES = [];
+
+  let TICK = 0;
+  let START = true;
+  let RUNID = 0;
+
+  const init = () => {
+    calcCanvas();
+    let sx = 100;
+    let sy = 100;
+    let sr = 50;
+    for(let i=0;i<=3;i++) {
+      HORIZONTAL_CIRCLES[i] = new circleCorner(sx-20+(sx+15)*(i+1),sy-30,sr);
+      HORIZONTAL_CIRCLES[i].draw();
+    }
+
+    for(let j=0;j<=3;j++) {
+      VERTICAL_CIRCLES[j] = new circleCorner(sx-20,sy+(sy+15)*(j+1)-30,sr);
+      VERTICAL_CIRCLES[j].isHorizontal = false;
+      VERTICAL_CIRCLES[j].draw(); 
+
+    }
+
+    setInterval(draw, 1000/30 );
+  };
+
+  // const loop = () => {
+  //   if(!START) ;
+
+  // }
+
+  const draw = () => {
+    TICK++;
+    ctx.clearRect(0, 0, WIDTH, HEIGHT);
+    ctx.strokeStyle = '#000';
+    ctx.lineWidth ="3";
+    ctx.strokeRect(0, 0, WIDTH, HEIGHT);
+
+    let tmpH = {};
+    let tmpV = {};
+    for(let i=0;i<=3;i++) {
+      tmpH = HORIZONTAL_CIRCLES[i];
+      tmpV = VERTICAL_CIRCLES[i];
+      // HORIZONTAL_CIRCLES[i].setAngle = Math.floor((TICK*(i+1)*.1)%360);
+      tmpH.angle -= (i+1)*.01;
+      tmpV.angle -= (i+1)*.01;
+      tmpH.draw();
+      tmpV.draw();
+    }
+
+
+
+    // 
+    // ctx.strokeStyle = '#000';
+    // ctx.lineWidth ="3";
+    // ctx.strokeRect(0, 0, WIDTH, HEIGHT);
+    // ctx.lineWidth ="1";
+    // ctx.stroke();
+
+    // ctx.beginPath();
+    // ctx.arc(100,75,50,0,2*Math.PI);
+    // ctx.stroke();
+
+    // let centerX=400;
+    // let centerY=200;
+    // let radius=100;
+    // ctx.beginPath();
+    // ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
+    // ctx.fillStyle = 'green';
+    // ctx.fill();
+    // ctx.lineWidth = 5;
+    // ctx.strokeStyle = '#003300';
+    // ctx.stroke();
+  };
+
+  const calcCanvas = () => {
+    gameCanvas.height = Math.floor( window.innerHeight / 100 )*100;
+    gameCanvas.width = Math.floor( window.innerWidth / 100 )*100;  
+    HEIGHT = gameCanvas.height;
+    WIDTH = gameCanvas.width;
+  };
+
+  const drawCircle = (x,y,r,f) => {
+    ctx.beginPath();
+    ctx.arc(x, y, r, 0, 2 * Math.PI, false);
+    if(f) ctx.fill();
+    ctx.stroke();
+  };
+
+  class canvasObj {
+    constructor(x,y,r) {
+      this.X = x;
+      this.Y = y;
+      this.radius = r;
+    }
+  }
+
+
+  class circleCorner extends canvasObj {
+    constructor(x,y,r) {
+      super(x,y,r);
+      this.angle = 90;
+      this.pointOnCX = 0;
+      this.pointOnCY = 0;
+      this.isHorizontal = true;
+      this.circleOutlineColor = '#003300';
+      this.circleDotColor = '#000000';
+      this.circleDotRadius = 5;
+      this.circleDotLine = 2;
+    }
+
+    set setIsHorizontal(newVal) {
+      this.isHorizontal = newVal;
+    }
+
+    set setAngle(newAngle) {
+      this.angle = newAngle;
+    }
+
+    get getAngle() {
+      return this.angle;
+    }
+
+    draw() {
+      ctx.beginPath();
+      ctx.lineWidth = "1";
+      // ctx.fillStyle = null;
+      ctx.arc(this.X, this.Y, this.radius, 0, 2 * Math.PI, false);
+      ctx.stroke();
+
+      ctx.strokeStyle = this.circleOutlineColor;
+      
+      this.pointOnCX = this.X + this.radius * Math.sin(this.angle);
+      this.pointOnCY = this.Y + this.radius * Math.cos(this.angle);
+
+      ctx.beginPath();
+
+      ctx.lineWidth = this.circleDotLine;
+      ctx.strokeStyle = this.circleDotColor;
+      ctx.arc(this.pointOnCX, this.pointOnCY, this.circleDotRadius , 0, 2 * Math.PI, false);
+      ctx.fillStyle = this.circleDotColor;
+      ctx.fill();
+      ctx.stroke();
+
+
+      ctx.beginPath();
+      ctx.moveTo(this.pointOnCX,this.pointOnCY);
+      if(this.isHorizontal) {
+        ctx.lineTo(this.pointOnCX,HEIGHT);
+      } else {
+        ctx.lineTo(WIDTH,this.pointOnCY);
+      }
+      ctx.stroke();
+    };
+  }
+
+</script>
+
+</body>
+</html>
