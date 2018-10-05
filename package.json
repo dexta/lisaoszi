@@ -1,0 +1,27 @@
+{
+  "name": "lisaoszi",
+  "version": "0.0.2",
+  "description": "In mathematics, a Lissajous curve /ˈlɪsəʒuː/, also known as Lissajous figure or Bowditch curve /ˈbaʊdɪtʃ/, is the graph of a system of parametric equations",
+  "main": "app.js",
+  "scripts": {
+    "test": "npm run test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dexta/lisaoszi.git"
+  },
+  "keywords": [
+    "math",
+    "js",
+    "canvas"
+  ],
+  "author": "dexta.de@gmail.com",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/dexta/lisaoszi/issues"
+  },
+  "homepage": "https://github.com/dexta/lisaoszi#readme",
+  "dependencies": {
+    "express": "^4.16.3"
+  }
+}
