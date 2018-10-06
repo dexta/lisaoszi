@@ -108,27 +108,39 @@ class littleCanvas extends canvasObj {
 class infoText extends canvasObj {
   constructor(x,y,r) {
     super(x,y,r);
-    this.font = 'bold 23px serif';
-    this.gridText = '';
-    this.pointCountObj = {};
+    
+    this.mainFontSize = Math.floor(this.radius/2);
+    this.subFontSize = Math.floor(this.radius/Math.PI);
+    this.miniFontSize = Math.floor(this.radius/(Math.P2*2));
+
+
+    this.font = `bold ${this.mainFontSize}px serif`;
+    this.subFont = `italic ${this.subFontSize}px serif`;
+    // this.gridText = '';
+    // this.pointCountObj = {};
   }
 
   draw() {
     ctx.font = this.font;
     // ctx.fillText(this.gridText, this.X-(this.radius*.9), this.Y-(this.radius*.9));
-    let pCount = this.pointCountObj.dotLineList.length;
-    let sumPointCount = pCount * this.gridText;
-    ctx.fillText(pCount, this.X-this.radius, this.Y - (this.radius*.2));
-    ctx.fillText(FPS, this.X+(this.radius*.2), this.Y - (this.radius*.2));
-    ctx.fillText(sumPointCount, this.X-this.radius, this.Y + (this.radius*.9));
-    ctx.font = 'italic 16px serif';
-    ctx.fillText("Point/p", this.X-this.radius, this.Y - (this.radius*.7));
-    ctx.fillText("FPS", this.X+(this.radius*.2), this.Y - (this.radius*.7));
-    ctx.fillText("Sum Points", this.X-this.radius, this.Y + (this.radius*.5));
-    ctx.font = 'italic 14px serif';
+    // let pCount = this.pointCountObj.dotLineList.length;
+    // let sumPointCount = pCount * this.gridText;
+    // ctx.fillText(pCount, this.X-this.radius, this.Y - (this.radius*.2));
+    
+    // ctx.fillText(sumPointCount, this.X-this.radius, this.Y + (this.radius*.9));
+    // ctx.font = 'italic 16px serif';
+    // ctx.fillText("Point/p", this.X-this.radius, this.Y - (this.radius*.7));
+
+    // ctx.fillText("Sum Points", this.X-this.radius, this.Y + (this.radius*.5));
+    
+    ctx.fillText("FPS", this.mainFontSize*1.5, this.mainFontSize);
+    ctx.fillText(FPS, this.mainFontSize*1.9, this.Y - (this.radius*.2));
+    
+    ctx.font = this.subFont;
     ctx.fillStyle = 'yellow';
-    ctx.fillText(MINFPS, this.X+(this.radius*.01), this.Y + (this.radius*.1));
+    ctx.fillText(MINFPS, this.X - this.radius , this.Y );
     ctx.fillStyle = 'green';
-    ctx.fillText(MAXFPS, this.X+(this.radius*.6), this.Y + (this.radius*.1));
+    ctx.fillText(MAXFPS, this.X+(this.radius/2), this.Y );
+
   }
 }
