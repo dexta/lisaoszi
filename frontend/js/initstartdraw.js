@@ -7,8 +7,11 @@ const BUFFER = noneCanvas.getContext("2d");
 let HEIGHT = gameCanvas.height;
 let WIDTH = gameCanvas.width;
 
-let ROWS = 2;
-let COLS = 5;
+let BOX_SIZE = 200;
+let BOX_RADIUS = 95;
+
+let ROWS = 8;
+let COLS = 16;
 
 let HORIZONTAL_CIRCLES = [];
 let VERTICAL_CIRCLES = [];
@@ -25,10 +28,7 @@ let NORMTIME = 0;
 
 const init = () => {
   calcCanvas();
-  let sx = 110;
-  let sy = 110;
-  let sr = 50;
-
+  makeitfit();
   for(let bx=0;bx<=ROWS;bx++) {
     BOX_GRID[bx] = [];
     for(let by=0;by<=COLS;by++) {
@@ -36,14 +36,14 @@ const init = () => {
         BOX_GRID[bx][by] = false;
         continue;
       } else if(by===0&&bx>0) {
-        BOX_GRID[bx][by] = new circleCorner(sx*(by+1)-sr,sy*(bx+1)-sr,sr);
+        BOX_GRID[bx][by] = new circleCorner(BOX_SIZE*(by+1)-BOX_RADIUS,BOX_SIZE*(bx+1)-BOX_RADIUS,BOX_RADIUS);
         BOX_GRID[bx][by].isHorizontal = false;
         BOX_GRID[bx][by].speed = 0.0051*(bx+1);
       } else if(bx===0&&by>0) {
-        BOX_GRID[bx][by] = new circleCorner(sx*(by+1)-sr,sy*(bx+1)-sr,sr);
+        BOX_GRID[bx][by] = new circleCorner(BOX_SIZE*(by+1)-BOX_RADIUS,BOX_SIZE*(bx+1)-BOX_RADIUS,BOX_RADIUS);
         BOX_GRID[bx][by].speed = 0.0051*(by+1);
       } else {
-        BOX_GRID[bx][by] = new littleCanvas(sx*(by+1)-sr,sy*(bx+1)-sr,sr*2);
+        BOX_GRID[bx][by] = new littleCanvas(BOX_SIZE*(by+1)-BOX_RADIUS,BOX_SIZE*(bx+1)-BOX_RADIUS,BOX_RADIUS*2);
         BOX_GRID[bx][by].extAxesObjX = BOX_GRID[0][by];
         BOX_GRID[bx][by].extAxesObjY = BOX_GRID[bx][0];
       }
@@ -51,7 +51,7 @@ const init = () => {
       BOX_GRID[bx][by].draw();
     }
   }
-  BOX_GRID[0][0] = new infoText(sx-sr,sy-sr,sr);
+  BOX_GRID[0][0] = new infoText(BOX_SIZE-BOX_RADIUS,BOX_SIZE-BOX_RADIUS,BOX_RADIUS);
   BOX_GRID[0][0].gridText = ROWS*COLS;
   BOX_GRID[0][0].pointCountObj = BOX_GRID[ROWS][COLS];
 
@@ -85,6 +85,12 @@ const calcCanvas = () => {
   WIDTH = gameCanvas.width;
   noneCanvas.height = HEIGHT;
   noneCanvas.width = WIDTH;
+};
+
+const makeitfit = () => {
+  ROWS = Math.floor(HEIGHT / BOX_SIZE)-1;
+  COLS = Math.floor(WIDTH / BOX_SIZE)-1;
+
 };
 
 const calcFPS = () => {
