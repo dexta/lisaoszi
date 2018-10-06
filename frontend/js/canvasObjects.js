@@ -81,39 +81,6 @@ class littleCanvas extends canvasObj {
     this.dotDotColor = 42;
   }
 
-  manageList (x,y) {
-    BUFFER.beginPath();
-    BUFFER.arc(y,x,1,2 * Math.PI, false);
-    BUFFER.stroke();
-    // const archiveImage = BUFFER.getImageData(this.X-(this.radius/2),this.Y-(this.radius/2),this.radius, this.radius);
-    // ctx.putImageData(archiveImage,this.X-(this.radius/2),this.Y-(this.radius/2));
-    // let dLen = this.dotLineList.length;
-    // if(dLen>1500) {
-    //   console.log("collect your carbage");
-    //   this.dotLineList = this.dotLineList.slice(100);
-    //   let oldLen = dLen;
-    //   dLen = this.dotLineList.length;
-    //   console.log(`Length before ${oldLen} and after ${dLen}`);
-      
-    // }
-    // this.dotLineList.push([Math.floor(y),Math.floor(x)]);
-    // let canvasData = ctx.getImageData(0, 0, WIDTH, HEIGHT);
-    // ctx.beginPath();
-    // for(let d=0;d<=dLen;d++) {
-    //   ctx.arc(this.dotLineList[d][0],this.dotLineList[d][1],1,2 * Math.PI, false);
-      // let ty = Math.floor(this.dotLineList[d][0]);
-      // let tx = Math.floor(this.dotLineList[d][1]);
-      // let index = (ty + tx * WIDTH ) * 4;
-      // canvasData.data[index + 0] = this.dotDotColor;
-      // canvasData.data[index + 1] = this.dotDotColor;
-      // canvasData.data[index + 2] = this.dotDotColor;
-      // canvasData.data[index + 3] = 255; // alpha channel
-
-    // }
-    // ctx.stroke();
-    // ctx.putImageData(canvasData, 0, 0);
-  }
-
   draw() {
     ctx.beginPath();
     ctx.strokeStyle = this.boxOutlineColor;
@@ -124,11 +91,16 @@ class littleCanvas extends canvasObj {
     ctx.strokeRect(x1, y1, this.radius, this.radius);
     ctx.stroke();
 
-    this.manageList(this.extAxesObjY.pointOnCY,this.extAxesObjX.pointOnCX);
+    // draw to the persisted buffer and copy the hole canvas 
+    // so this is always under the other both path()
+    BUFFER.beginPath();
+    BUFFER.arc(this.extAxesObjX.pointOnCX,this.extAxesObjY.pointOnCY,1,2 * Math.PI, false);
+    BUFFER.stroke(); 
+
     ctx.beginPath();
     ctx.strokeStyle = "red";
     ctx.lineWidth = "1";
-    ctx.arc(this.extAxesObjX.pointOnCX,this.extAxesObjY.pointOnCY , 5 ,2 * Math.PI, false)
+    ctx.arc(this.extAxesObjX.pointOnCX,this.extAxesObjY.pointOnCY , 5 ,2 * Math.PI, false);
     ctx.stroke();
   }
 }
@@ -139,7 +111,6 @@ class infoText extends canvasObj {
     this.font = 'bold 23px serif';
     this.gridText = '';
     this.pointCountObj = {};
-
   }
 
   draw() {
