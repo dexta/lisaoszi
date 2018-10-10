@@ -57,6 +57,7 @@ const init = () => {
 
   // RUNID = setInterval(draw, 1000/60 );
   gameCanvas.addEventListener('click',getClick);
+  window.addEventListener('keyup',getKeyUp);
   draw();
 };
 
@@ -114,4 +115,30 @@ const getClick = (e) => {
   let cY = Math.floor(e.offsetY/(BOX_SIZE));
   // console.dir(BOX_GRID[cY][cX]);
   BOX_GRID[cY][cX].onClick(e.offsetX,e.offsetY);
+};
+
+const getKeyUp = (e) => {
+  if(e.keyCode===66) {
+    BOX_SIZE+=10;
+  } else if(e.keyCode===86) {
+    BOX_SIZE-=10;
+    if((2*BOX_RADIUS)>=BOX_SIZE) BOX_SIZE+=10;
+  } else if(e.keyCode===82) {
+    BOX_RADIUS+=5;
+    if((2*BOX_RADIUS)>=BOX_SIZE) BOX_RADIUS-=5;
+  } else if(e.keyCode===69) {
+    BOX_RADIUS-=5;
+    if(BOX_RADIUS<=10) BOX_RADIUS+=5;
+  } else if(e.keyCode===73) {
+    init();
+  } else if(e.keyCode===72) {
+    console.log(`
+  b === Plus 10 Box size
+  v === Minus 10 Box size
+  r === Plus 5 Box radius
+  e === Minus 5 Box radius
+  i === restart or init()
+      `);
+  }
+  
 };
