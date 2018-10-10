@@ -13,8 +13,8 @@ let BOX_RADIUS = 95;
 let ROWS = 8;
 let COLS = 16;
 
-let HORIZONTAL_CIRCLES = [];
-let VERTICAL_CIRCLES = [];
+// let HORIZONTAL_CIRCLES = [];
+// let VERTICAL_CIRCLES = [];
 let BOX_GRID = [];
 let TICK = 0;
 let START = true;
@@ -56,6 +56,7 @@ const init = () => {
   BOX_GRID[0][0].pointCountObj = BOX_GRID[ROWS][COLS];
 
   // RUNID = setInterval(draw, 1000/60 );
+  gameCanvas.addEventListener('click',getClick);
   draw();
 };
 
@@ -103,4 +104,14 @@ const calcFPS = () => {
   }
   if(FPS>MAXFPS) MAXFPS = FPS;
   if(FPS<MINFPS) MINFPS = FPS;
-}
+};
+
+
+const getClick = (e) => {
+  if(e.offsetX>=((COLS+1)*BOX_SIZE)||e.offsetY>=((ROWS+1)*BOX_SIZE)) return;
+  // console.dir(e);
+  let cX = Math.floor(e.offsetX/(BOX_SIZE));
+  let cY = Math.floor(e.offsetY/(BOX_SIZE));
+  // console.dir(BOX_GRID[cY][cX]);
+  BOX_GRID[cY][cX].onClick(e.offsetX,e.offsetY);
+};

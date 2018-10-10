@@ -103,6 +103,10 @@ class littleCanvas extends canvasObj {
     ctx.arc(this.extAxesObjX.pointOnCX,this.extAxesObjY.pointOnCY , 5 ,2 * Math.PI, false);
     ctx.stroke();
   }
+
+  onClick() {
+    return;
+  }
 }
 
 class infoText extends canvasObj {
@@ -113,11 +117,11 @@ class infoText extends canvasObj {
     this.subFontSize = Math.floor(this.radius/Math.PI);
     this.miniFontSize = Math.floor(this.radius/(Math.P2*2));
 
-
     this.font = `bold ${this.mainFontSize}px serif`;
     this.subFont = `italic ${this.subFontSize}px serif`;
     // this.gridText = '';
     // this.pointCountObj = {};
+    this.clicked = false;
   }
 
   draw() {
@@ -142,5 +146,56 @@ class infoText extends canvasObj {
     ctx.fillStyle = 'green';
     ctx.fillText(MAXFPS, this.X+(this.radius/2), this.Y );
 
+    if(this.clicked) {
+      ctx.font = this.subFont;
+      ctx.fillStyle = 'blue';
+      ctx.fillText("BOX", this.X - this.radius , this.Y+(this.radius/3) );
+      ctx.fillStyle = 'black';
+      // ctx.fillText("+",this.X, this.Y+(this.radius/3));
+
+      ctx.fillText(BOX_SIZE,this.X+(this.subFontSize), this.Y+(this.radius/3));
+
+      // ctx.fillText("-",this.X+(this.radius*.8), this.Y+(this.radius/3));
+      ctx.fillStyle = 'red';
+      ctx.fillText("RADIUS", this.X - this.radius , this.Y+(this.radius) );
+      ctx.fillStyle = 'black';
+      // ctx.fillText("+",this.X, this.Y+(this.radius));
+
+      ctx.fillText(BOX_RADIUS,this.X+(this.subFontSize), this.Y+(this.radius));
+
+      // ctx.fillText("-",this.X+(this.radius*.8), this.Y+(this.radius));
+    }
+
+
+  }
+
+  onClick(cX,xY) {
+    if(!this.clicked) return this.clicked = true;
+    // is plus clicked
+    if(    cX>=(this.X-this.subFontSize) && cX<=(this.X+(this.subFontSize)) 
+        && xY>=(this.Y-this.subFontSize) && xY<=(this.Y+this.subFontSize)) {
+      // console.log("box plus clicked");
+      // BOX_SIZE+=10;
+    } else if (
+           cX>=((this.X+(this.radius*.8))-this.subFontSize) && cX<=((this.X+(this.radius*.8))+(this.subFontSize)) 
+        && xY>=((this.Y+(this.radius/3))-this.subFontSize) && xY<=((this.Y+(this.radius/3))+this.subFontSize)    
+      ) {
+      // console.log("box minus clicked");
+      // BOX_SIZE-=10;
+      // if(BOX_RADIUS*2>=BOX_SIZE) BOX_SIZE+=10;
+    }
+
+    if(    cX>=(this.X-this.subFontSize) && cX<=(this.X+(this.subFontSize)) 
+        && xY>=(this.Y+(this.radius)-this.subFontSize) && xY<=(this.Y+(this.radius)+this.subFontSize)) {
+      // console.log("radius plus clicked");
+      // BOX_RADIUS+=5;
+      // if(BOX_RADIUS*2>=BOX_SIZE) BOX_RADIUS-=5;
+    } else if (
+           cX>=((this.X+(this.radius*.8))-this.subFontSize) && cX<=((this.X+(this.radius*.8))+(this.subFontSize)) 
+        && xY>=((this.Y+(this.radius)+(this.radius/3))-this.subFontSize) && xY<=((this.Y+(this.radius)+(this.radius/3))+this.subFontSize)    
+      ) {
+      // console.log("radius minus clicked");
+      // BOX_RADIUS-=5;
+    }
   }
 }
